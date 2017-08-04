@@ -1,0 +1,1 @@
+Basic resource routes for mongoose models
