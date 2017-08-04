@@ -2,6 +2,10 @@
   "name": "mongoose-resource-router",
   "version": "1.0.1",
   "description": "Resource router for Mongoose models",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/enesTufekci/mongoose-resource-router"
+  },
   "main": "./dist/index.js",
   "files": [
     "./dist/controller/index.js",
