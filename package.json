@@ -6,10 +6,10 @@
     "type": "git",
     "url": "git://github.com/enesTufekci/mongoose-resource-router"
   },
-  "main": "./lib/index.js",
+  "main": "lib/index.js",
   "files": [
-    "./lib/controller/index.js",
-    "./lib/router/index.js"
+    "lib/controller/index.js",
+    "lib/router/index.js"
   ],
   "scripts": {
     "test": "test"
