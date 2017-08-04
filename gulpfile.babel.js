@@ -7,27 +7,27 @@ import runSequence from 'run-sequence';
 const plugins = gulpLoadPlugins();
 
 const paths = {
-  js: ['./**/*.js', '!dist/**', '!node_modules/**', '!coverage/**'],
+  js: ['./**/*.js', '!lib/**', '!node_modules/**', '!coverage/**'],
   nonJs: ['./package.json', './.gitignore', './.env'],
   tests: './server/tests/*.js'
 };
 
-// Clean up dist and coverage directory
+// Clean up lib and coverage directory
 gulp.task('clean', () =>
-  del.sync(['dist/**', 'dist/.*', 'coverage/**', '!dist', '!coverage'])
+  del.sync(['lib/**', 'lib/.*', 'coverage/**', '!lib', '!coverage'])
 );
 
-// Copy non-js files to dist
+// Copy non-js files to lib
 gulp.task('copy', () =>
   gulp.src(paths.nonJs)
-    .pipe(plugins.newer('dist'))
-    .pipe(gulp.dest('dist'))
+    .pipe(plugins.newer('lib'))
+    .pipe(gulp.dest('lib'))
 );
 
-// Compile ES6 to ES5 and copy to dist
+// Compile ES6 to ES5 and copy to lib
 gulp.task('babel', () =>
   gulp.src([...paths.js, '!gulpfile.babel.js'], { base: '.' })
-    .pipe(plugins.newer('dist'))
+    .pipe(plugins.newer('lib'))
     .pipe(plugins.sourcemaps.init())
     .pipe(plugins.babel())
     .pipe(plugins.sourcemaps.write('.', {
@@ -36,15 +36,15 @@ gulp.task('babel', () =>
         return path.relative(file.path, __dirname);
       }
     }))
-    .pipe(gulp.dest('dist'))
+    .pipe(gulp.dest('lib'))
 );
 
 // Start server with restart on file changes
 gulp.task('nodemon', ['copy', 'babel'], () =>
   plugins.nodemon({
-    script: path.join('dist', 'index.js'),
+    script: path.join('lib', 'index.js'),
     ext: 'js',
-    ignore: ['node_modules/**/*.js', 'dist/**/*.js'],
+    ignore: ['node_modules/**/*.js', 'lib/**/*.js'],
     tasks: ['copy', 'babel']
   })
 );
@@ -52,7 +52,7 @@ gulp.task('nodemon', ['copy', 'babel'], () =>
 // gulp serve for development
 gulp.task('serve', ['clean'], () => runSequence('nodemon'));
 
-// default task: clean dist, compile js files and copy non-js files.
+// default task: clean lib, compile js files and copy non-js files.
 gulp.task('default', ['clean'], () => {
   runSequence(
     ['copy', 'babel']
